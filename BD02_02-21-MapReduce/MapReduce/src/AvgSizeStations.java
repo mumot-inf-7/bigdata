@@ -84,11 +84,9 @@ public class AvgSizeStations extends Configured implements Tool {
                 sum += val.get();
                 count += 1;
             }
-            //TODO: set average variable properly
-
+            average = sum / count;
             resultValue.set(average);
-            //TODO: write result pair to the context
-
+            context.write(resultKey, resultValue);
         }
     }
 
