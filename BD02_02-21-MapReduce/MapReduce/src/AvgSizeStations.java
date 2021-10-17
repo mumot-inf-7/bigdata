@@ -55,8 +55,8 @@ public class AvgSizeStations extends Configured implements Tool {
                         }
                         i++;
                     }
-                    //TODO: write intermediate pair to the context
 
+                    context.write(year, size);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
