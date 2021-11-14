@@ -54,4 +54,17 @@ class AvgSizeStationsTest {
 
         assertEquals(new KilledData(6,2,2,2,2,2,2,2), data1.add(data2));
     }
+
+    @Test
+    void testSplitStreetAndCode(){
+        assertEquals("street-name", "1239234//:street-name".split("//:")[1]);
+    }
+
+    @Test
+    void OutputDataToCsv(){
+        OutputData outputData = OutputData.fromKilledData("Street", "123123", new KilledData(1, 2, 3, 4, 5, 6, 7, 8));
+        System.out.println(
+                outputData.toCsvString()
+        );
+    }
 }

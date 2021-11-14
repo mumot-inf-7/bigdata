@@ -1,4 +1,5 @@
 import com.google.gson.Gson;
+import com.opencsv.CSVWriter;
 import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.DoubleWritable;
@@ -15,6 +16,11 @@ import org.apache.hadoop.util.ToolRunner;
 import com.opencsv.CSVParser;
 
 import java.io.IOException;
+import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class AvgSizeStations extends Configured implements Tool {
 
@@ -60,7 +66,7 @@ public class AvgSizeStations extends Configured implements Tool {
                         return;
 
                     lineData.getStreets().forEach(s -> {
-                        keoOut.set(lineData.getCode()+"-"+s);
+                        keoOut.set(lineData.getCode()+"//-"+s);
 //                        valueOut.set(lineData.getAllInjured()+ lineData.getAllKilled());
                         valueOut.set(gson.toJson(lineData));
                         try {
@@ -84,14 +90,19 @@ public class AvgSizeStations extends Configured implements Tool {
         public void reduce(Text key, Iterable<Text> values,
                            Context context) throws IOException, InterruptedException {
             Gson gson = new Gson();
-            Text resultKey = new Text(key);
+
             KilledData result = KilledData.getData();
 
             values.forEach(text -> {
+                System.out.println(text.toString());
                 result.add(gson.fromJson(text.toString(), KilledData.class));
             });
 
-            Text resultVal = new Text(gson.toJson(result));
+            String[] streetAndCode = key.toString().split("//-");
+            Text resultVal = new Text("");
+            OutputData outputData = OutputData.fromKilledData(streetAndCode[0], streetAndCode[1], result);
+
+            Text resultKey = new Text(outputData.toCsvString());
 
             context.write(resultKey, resultVal);
         }

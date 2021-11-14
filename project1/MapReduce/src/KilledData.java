@@ -23,18 +23,16 @@ public class KilledData implements Serializable {
     }
 
     public KilledData add(KilledData o) {
-        KilledData res = o.clone();
-
         Arrays.stream(KilledData.class.getDeclaredFields()).collect(Collectors.toList()).forEach(field -> {
             try {
                 field.setAccessible(true);
-                field.setInt(res, field.getInt(this) + field.getInt(o));
+                field.setInt(this, field.getInt(this) + field.getInt(o));
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
         });
 
-        return res;
+        return this;
     }
     @Override
     public KilledData clone(){
