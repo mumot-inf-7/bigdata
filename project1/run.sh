@@ -49,11 +49,11 @@ hive -f transform5.hql
 echo " "
 echo ">>>> pobieranie ostatecznego wyniku (6) z HDFS do lokalnego systemu plików"
 mkdir -p ./output6
-hadoop fs -copyToLocal output6/* ./output6
+hadoop fs -copyToLocal output6
 
 echo " "
 echo " "
 echo " "
 echo " "
 echo ">>>> prezentowanie uzyskanego wyniku (6)"
-cat ./output6/*
+cat ./output6/**/*
