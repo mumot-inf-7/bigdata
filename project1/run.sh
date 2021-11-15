@@ -11,7 +11,7 @@ bash MapReduce/compile.sh
 echo " "
 echo ">>>> usuwanie pozostałości po wcześniejszych uruchomieniach"
 # usuwamy katalog output dla mapreduce (3)
-if $(hadoop fs -test -d ./output_mr3) ; then hadoop fs -rm -f -r ./output_mr3; fi
+if $(hadoop fs -test -d ./output_mr3) ; then hadoop fs -rm -f -r ./output; fi
 # usuwamy katalog output dla ostatecznego wyniku projektu (6)
 if $(hadoop fs -test -d ./output6) ; then hadoop fs -rm -f -r ./output6; fi
 # usuwamy katalog plikami projektu (skryptami, plikami jar i wszystkim co musi być dostępne w HDFS do uruchomienia projektu)
@@ -24,17 +24,19 @@ echo ">>>> kopiowanie skryptów, plików jar i wszystkiego co musi być dostępn
 # hadoop fs -mkdir project_files
 # TODO: proszę dostosować poniższe polecenia tak, aby wszystkie skrypty, pliki jar i inne, 
 # które muszą do uruchomienia projektu być dostępne z poziomu HDFS, znalazły się w katalogu ./project_files
-hadoop fs -copyFromLocal *.jar project_files
+# hadoop fs -copyFromLocal *.jar project_files
 
 unzip -n zestaw3.zip
-hadoop fs -copyFromLocal input input
+hadoop fs -copyFromLocal input
+hadoop fs -mkdir output_mr3
 
 echo " "
 echo ">>>> uruchamianie zadania MapReduce - przetwarzanie (2)"
 # TODO: proszę dostosować poniższe polecenie tak, aby uruchamiało ono zadanie MapReduce (2)
 #przykład dla MapReduce Classic
 sudo cp opencsv-5.5.2.jar /usr/lib/hadoop/lib/
-hadoop jar project.jar AvgSizeStations -libjars opencsv-5.5.2.jar input/datasource1 output_mr3
+hadoop jar project.jar AvgSizeStations -libjars opencsv-5.5.2.jar input/datasource1 output
+hadoop fs -cp output/* output_mr3
 
 echo " "
 echo ">>>> uruchamianie skryptu Hive/Pig - przetwarzanie (5)"
