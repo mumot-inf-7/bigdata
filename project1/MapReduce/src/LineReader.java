@@ -2,6 +2,7 @@ import com.opencsv.CSVParser;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 public final class LineReader {
@@ -10,7 +11,7 @@ public final class LineReader {
         CSVParser parser = new CSVParser();
         String[] fields = parser.parseLine(line);
         return new LineData(
-                Arrays.stream(new String[]{fields[6], fields[7], fields[8]}).filter(s -> {return s.length() > 0;}).collect(Collectors.toList()),
+                Arrays.stream(new String[]{fields[6], fields[7], fields[8]}).filter(s -> {return s.length() > 0;}).map(s -> s.toUpperCase(Locale.ROOT)).collect(Collectors.toList()),
                 fields[2],
                 Integer.parseInt(fields[0].split("/")[2]),
                 Integer.parseInt(fields[11]),

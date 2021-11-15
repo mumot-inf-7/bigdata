@@ -1,12 +1,18 @@
+drop table nypd;
+drop table codes;
 create table nypd(
     street string, code string, pi int, pk int, ci int, ck int, mi int, mk int, ai int, ak int
     ) 
     ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t'
     STORED AS TEXTFILE
-    location 'output';
+    location 'output_mr3';
 
 create table codes(code string, borough string) ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' STORED AS TEXTFILE;
-load data local inpath "/home/bartek/bigdata/project1/zips-boroughs.csv" into table codes;
+load data inpath "input/datasource1" into table codes;
+select * from nypd limit 10;
+select * from codes limit 10;
+
+select * from nypd where (select codes.borough from codes where codes.code == nypd.code) == "MANHATTAN";
 
 DROP TEMPORARY MACRO IF EXISTS isNumeric;
 
