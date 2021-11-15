@@ -62,7 +62,7 @@ class AvgSizeStationsTest {
 
     @Test
     void OutputDataToCsv(){
-        OutputData outputData = OutputData.fromKilledData("Street", "123123", new KilledData(1, 2, 3, 4, 5, 6, 7, 8));
+        OutputData outputData = OutputData.fromKilledData("Street,\ttab-street", "123123", new KilledData(1, 2, 3, 4, 5, 6, 7, 8));
         System.out.println(
                 outputData.toCsvString()
         );

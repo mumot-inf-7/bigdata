@@ -1,4 +1,5 @@
 import com.opencsv.CSVWriter;
+import com.opencsv.ICSVWriter;
 import lombok.Builder;
 import lombok.Value;
 
@@ -38,7 +39,7 @@ public class OutputData implements Serializable {
     }
     public String toCsvString(){
         StringWriter stringWriter = new StringWriter();
-        CSVWriter csvWriter = new CSVWriter(stringWriter);
+        CSVWriter csvWriter = new CSVWriter(stringWriter, '\t', '\0', ICSVWriter.NO_ESCAPE_CHARACTER, ICSVWriter.DEFAULT_LINE_END);
 
         String[] arr = new String[]{
                 code,
