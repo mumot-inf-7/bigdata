@@ -28,6 +28,7 @@ public class AvgSizeStations extends Configured implements Tool {
         FileOutputFormat.setOutputPath(job, new Path(args[1]));
         job.setMapperClass(AvgSizeStationMapper.class);
         job.setReducerClass(AvgSizeStationReducer.class);
+        job.setCombinerClass(AvgSizeStationCombiner.class);
 
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(IntWritable.class);
